@@ -5,12 +5,15 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class FirstPersonScrollController : MonoBehaviour
 {
+    Animator animator;
+
     public float moveSpeed = 5f;           // Speed of movement
     public float rotationSpeed = 100f;    // Speed of rotation for mouse scroll left/right
     public float lookSensitivity = 2f;    // Mouse look sensitivity for up/down
     public float jumpForce = 5f;          // Force applied when jumping
     public Transform cameraTransform;     // Reference to the camera transform
     public float maxLookAngle = 63f;      // Max angle for looking up/down
+    public float runModifier = 1.3f;
 
     private Rigidbody rb;
     private CapsuleCollider capsuleCollider;
@@ -19,6 +22,7 @@ public class FirstPersonScrollController : MonoBehaviour
 
     void Start()
     {
+        animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         capsuleCollider = GetComponent<CapsuleCollider>();
 
@@ -39,13 +43,26 @@ public class FirstPersonScrollController : MonoBehaviour
         // Get input for movement
         float horizontal = Input.GetAxisRaw("Horizontal"); // A/D or Left/Right
         float vertical = Input.GetAxisRaw("Vertical");     // W/S or Up/Down
-
+        
         // Calculate direction relative to player orientation
         Vector3 moveDirection = transform.right * horizontal + transform.forward * vertical;
         Vector3 moveVelocity = moveDirection * moveSpeed;
-
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            moveVelocity *= runModifier;
+            animator.SetBool("isRunning", true);
+        }
+        else{
+            animator.SetBool("isRunning", false);
+        }
         // Apply velocity while preserving vertical velocity
         rb.velocity = new Vector3(moveVelocity.x, rb.velocity.y, moveVelocity.z);
+        if(horizontal != 0.0f || vertical != 0.0f){
+            animator.SetBool("isWalking", true);
+        }
+        else{
+            animator.SetBool("isWalking", false);
+        }
     }
 
     private void HandleMouseLook()
