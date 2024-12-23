@@ -12,13 +12,19 @@ public class FirstPersonScrollController : MonoBehaviour
     public float lookSensitivity = 2f;    // Mouse look sensitivity for up/down
     public float jumpForce = 5f;          // Force applied when jumping
     public Transform cameraTransform;     // Reference to the camera transform
+    public Transform headTransform;       // Reference to the head bone or object
     public float maxLookAngle = 63f;      // Max angle for looking up/down
     public float runModifier = 1.3f;
+    public float followHeadSmoothness = 0.1f; // Determines the smoothness of the camera motion
+    public float followHeadAmplitude = 0.5f;  // Determines how much the camera follows the head
 
     private Rigidbody rb;
     private CapsuleCollider capsuleCollider;
     private float verticalRotation = 0f;
     private bool isGrounded = false;      // Tracks if the player is on the ground
+    private Vector3 initialHeadToCameraOffset;
+    private Quaternion initialHeadToCameraRotation;
+
 
     void Start()
     {
@@ -29,6 +35,10 @@ public class FirstPersonScrollController : MonoBehaviour
         // Lock cursor to the game window
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        // Calculate the initial offset of the camera relative to the head
+        initialHeadToCameraOffset = cameraTransform.position - headTransform.position;
+        initialHeadToCameraRotation = Quaternion.Inverse(headTransform.rotation) * cameraTransform.rotation;
     }
 
     void Update()
@@ -36,6 +46,7 @@ public class FirstPersonScrollController : MonoBehaviour
         HandleMovement();
         HandleMouseLook();
         HandleJump();
+        SmoothFollowHead();
     }
 
     private void HandleMovement()
@@ -106,4 +117,19 @@ public class FirstPersonScrollController : MonoBehaviour
             isGrounded = false;
         }
     }
+
+    private void SmoothFollowHead()
+{
+    // Target position based on head position and initial offset
+    Vector3 targetPosition = headTransform.TransformPoint(initialHeadToCameraOffset);
+
+    // Target rotation based on head rotation and initial offset
+    Quaternion targetRotation = headTransform.rotation * initialHeadToCameraRotation;
+
+    // Smoothly move the camera
+    cameraTransform.position = Vector3.Lerp(cameraTransform.position, targetPosition, followHeadSmoothness);
+
+    // Smoothly rotate the camera
+    cameraTransform.rotation = Quaternion.Slerp(cameraTransform.rotation, targetRotation, followHeadSmoothness);
+}
 }
