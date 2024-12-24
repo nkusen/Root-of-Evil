@@ -9,10 +9,45 @@ public class PlayerLogic : MonoBehaviour
     public float lookAngle = 45f;  // Angle of the cone in front of the player
     public LayerMask enemyLayer;   // Layer for identifying enemies
     public bool showLookAtArea = true;
-
+    
+    public int fragmentCount = 0;
+    public int greenCrystalCount = 0;
+    public int redCrystalCount = 0;
+    
     void Update()
     {
         UpdateLookedAtEnemies();
+    }
+
+    public int GetFragmentCount()
+    {
+        return fragmentCount;
+    }
+
+    public int GetGreenCrystalCount()
+    {
+        return greenCrystalCount;
+    }
+
+    public int GetRedCrystalCount()
+    {
+        return redCrystalCount;
+    }
+
+    public void AddCollectable(int collectableId)
+    {
+        if(collectableId == 0){
+            fragmentCount++;
+        }
+        else if(collectableId == 1){
+            greenCrystalCount++;
+        }
+        else if(collectableId == 2){
+            redCrystalCount++;
+        }
+        else{
+            Debug.LogWarning("unsuported collectable id");
+        }
     }
 
     private void UpdateLookedAtEnemies()
