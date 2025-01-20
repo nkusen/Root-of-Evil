@@ -21,32 +21,34 @@ public class PauseMenu : MonoBehaviour
 
     public void Resume()
     {
-        pauseMenuUI.SetActive(false); // Hide the pause menu
         Time.timeScale = 1f; // Resume game time
         Cursor.lockState = CursorLockMode.Locked; // Lock the cursor back to the game view
         Cursor.visible = false; // Hide the cursor
-        isPaused = false;
 
         // Enable camera movement (if your camera has a script)
         if (playerCamera.TryGetComponent(out MonoBehaviour cameraController))
         {
             cameraController.enabled = true;
         }
+
+        pauseMenuUI.SetActive(false); // Hide the pause menu
+        isPaused = false;
     }
 
     public void Pause()
     {
-        pauseMenuUI.SetActive(true); // Show the pause menu
         Time.timeScale = 0f; // Freeze game time
         Cursor.lockState = CursorLockMode.None; // Unlock the cursor
         Cursor.visible = true; // Make the cursor visible
-        isPaused = true;
 
         // Disable camera movement (if your camera has a script)
         if (playerCamera.TryGetComponent(out MonoBehaviour cameraController))
         {
             cameraController.enabled = false;
         }
+
+        pauseMenuUI.SetActive(true); // Show the pause menu
+        isPaused = true;
     }
 
     public void Restart()
