@@ -9,46 +9,65 @@ public class PlayerLogic : MonoBehaviour
     public float lookAngle = 45f;  // Angle of the cone in front of the player
     public LayerMask enemyLayer;   // Layer for identifying enemies
     public bool showLookAtArea = true;
-    
-    public int fragmentCount = 0;
-    public int greenCrystalCount = 0;
-    public int redCrystalCount = 0;
-    
+
+    public Dictionary<string, int> inventory = new Dictionary<string, int>();
+
+    public float InteractRange;
+    public Transform InteractorSource;
+
+    public Canvas interactUI;
+
+    private AudioSource pickupSound;
+
     void Update()
     {
         UpdateLookedAtEnemies();
+
+
+        //interaction logic
+        Ray ray = new Ray(InteractorSource.position, InteractorSource.forward);
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, InteractRange))
+        {
+            GameObject hitObject = hitInfo.collider.gameObject;
+            if (hitObject.TryGetComponent<IInteractable>(out IInteractable interactObj))
+            {
+                //dodaj UI popup za interact
+
+                interactUI.enabled = true;
+
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    InteractHandler(interactObj, hitObject.tag);
+                }
+            } else { interactUI.enabled = false; }
+        } else { interactUI.enabled = false; }
+
+    }
+
+    private void Start()
+    {
+        interactUI.enabled = false;
+        pickupSound = GetComponent<AudioSource>();
     }
 
     public int GetFragmentCount()
     {
-        return fragmentCount;
+        inventory.TryGetValue("fragment", out int count);
+        return count;
     }
 
     public int GetGreenCrystalCount()
     {
-        return greenCrystalCount;
+        inventory.TryGetValue("greenCrystal", out int count);
+        return count;
     }
 
     public int GetRedCrystalCount()
     {
-        return redCrystalCount;
+        inventory.TryGetValue("redCrystal", out int count);
+        return count;
     }
 
-    public void AddCollectable(int collectableId)
-    {
-        if(collectableId == 0){
-            fragmentCount++;
-        }
-        else if(collectableId == 1){
-            greenCrystalCount++;
-        }
-        else if(collectableId == 2){
-            redCrystalCount++;
-        }
-        else{
-            Debug.LogWarning("unsuported collectable id");
-        }
-    }
 
     private void UpdateLookedAtEnemies()
     {
@@ -108,6 +127,21 @@ public class PlayerLogic : MonoBehaviour
             Quaternion rotation = Quaternion.Euler(0, i, 0); // Rotate by angle step
             Vector3 direction = rotation * forward; // Get the direction based on the rotation
             Gizmos.DrawLine(transform.position, transform.position + direction); // Draw the line
+        }
+    }
+
+    private void InteractHandler(IInteractable interactObj, string tag)
+    {
+        if (tag.Equals("Collectible"))
+        {
+            string objectID = interactObj.Interact();
+            GetComponent<PlayerLogic>().inventory.TryGetValue(objectID, out int currentCount);
+            GetComponent<PlayerLogic>().inventory[objectID] = currentCount + 1;
+            pickupSound.Play();
+        }
+        else
+        {
+            interactObj.Interact();
         }
     }
 }

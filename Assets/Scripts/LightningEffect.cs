@@ -31,11 +31,20 @@ public class LightningEffect : MonoBehaviour
     private float originalSunIntensity;
 
     [Header("Lightning Bolt Settings")]
-    [Tooltip("The starting point of the lightning.")]
-    public Transform startPoint;
+    //[Tooltip("The starting point of the lightning.")]
+    //public Transform startPoint;
 
-    [Tooltip("The ending point of the lightning.")]
-    public Transform endPoint;
+    //[Tooltip("The ending point of the lightning.")]
+    //public Transform endPoint;
+
+    [Tooltip("The size of the area where lighning will spawn.")]
+    public float lightningArea;
+
+    [Tooltip("The height at which the hunder starts from. Shoud be matched to cloud height.")]
+    public float cloudHeight;
+
+    [Tooltip("Height of the ground")]
+    public float groundHeight;
 
     [Tooltip("The number of segments in the lightning bolt.")]
     public int segments = 10;
@@ -45,8 +54,13 @@ public class LightningEffect : MonoBehaviour
 
     private LineRenderer lineRenderer;
 
+    private AudioSource thunderSound;
+
     private void Awake()
     {
+
+        thunderSound = GetComponent<AudioSource>();
+
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = segments + 1; // Set number of points in the LineRenderer
         lineRenderer.enabled = false; // Initially hidden
@@ -73,11 +87,11 @@ public class LightningEffect : MonoBehaviour
 
     public void SimulateLightning()
     {
-        if (startPoint == null || endPoint == null)
-        {
-            Debug.LogError("StartPoint and EndPoint must be assigned.");
-            return;
-        }
+        //if (startPoint == null || endPoint == null)
+        //{
+        //    Debug.LogError("StartPoint and EndPoint must be assigned.");
+        //    return;
+        //}
 
         // Start the combined lightning effect
         StartCoroutine(LightningSequence());
@@ -91,6 +105,8 @@ public class LightningEffect : MonoBehaviour
         // Flash the skybox and sunlight
         FlashSkyboxAndSunlight();
 
+        thunderSound.Play();
+
         // Wait for the flash duration
         yield return new WaitForSeconds(flashDuration);
 
@@ -101,11 +117,19 @@ public class LightningEffect : MonoBehaviour
 
     private void GenerateLightningBolt()
     {
+
+        //random Start i End point u podrucju oko objekta na kojega je stavljena skripta
+        Vector3 randStart = new Vector3(Random.Range(-lightningArea, lightningArea) + gameObject.transform.position.x, cloudHeight, Random.Range(-lightningArea, lightningArea) + gameObject.transform.position.z);
+        Vector3 randEnd = new Vector3(Random.Range(-lightningArea, lightningArea) + gameObject.transform.position.x, groundHeight, Random.Range(-lightningArea, lightningArea) + gameObject.transform.position.z);
+
         // Generate the lightning bolt path
         Vector3[] lightningPoints = new Vector3[segments + 1];
-        Vector3 direction = (endPoint.position - startPoint.position) / segments;
+        //Vector3 direction = (endPoint.position - startPoint.position) / segments;
+        Vector3 direction =- (randStart - randEnd) / segments;
 
-        lightningPoints[0] = startPoint.position; // Start of lightning
+        //lightningPoints[0] = startPoint.position; // Start of lightning
+
+        lightningPoints[0] = randStart;
         for (int i = 1; i < segments; i++)
         {
             Vector3 offset = new Vector3(
@@ -114,9 +138,11 @@ public class LightningEffect : MonoBehaviour
                 Random.Range(-zigzagIntensity, zigzagIntensity)
             );
 
-            lightningPoints[i] = startPoint.position + direction * i + offset;
+            //lightningPoints[i] = startPoint.position + direction * i + offset;
+            lightningPoints[i] = randStart + direction * i + offset;
         }
-        lightningPoints[segments] = endPoint.position; // End of lightning
+        //lightningPoints[segments] = endPoint.position; // End of lightning
+        lightningPoints[segments] = randEnd;
 
         // Apply the positions to the LineRenderer
         lineRenderer.SetPositions(lightningPoints);

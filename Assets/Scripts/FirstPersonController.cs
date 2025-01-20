@@ -86,7 +86,7 @@ public class FirstPersonScrollController : MonoBehaviour
         transform.Rotate(Vector3.up * mouseX * rotationSpeed * Time.deltaTime);
 
         // Tilt the camera up/down
-        verticalRotation -= mouseY * lookSensitivity;
+        verticalRotation -= mouseY * lookSensitivity * Time.deltaTime;
         verticalRotation = Mathf.Clamp(verticalRotation, -maxLookAngle, maxLookAngle); // Clamp tilt
         cameraTransform.localRotation = Quaternion.Euler(verticalRotation, 0f, 0f);
     }
