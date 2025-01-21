@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0c9dec25b30c34d3ea38985d69acf267
+guid: 89c18533b69f54cfa844077118b7382b
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,48 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: bakrena.004
-    second: {fileID: 2100000, guid: 73d9fcde13a41400b8a276c85a8b2c69, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: desno.007
-    second: {fileID: 2100000, guid: 53c225eba700a46e78b1e1cd10ce1ba8, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: drvo.008
-    second: {fileID: 2100000, guid: 1ed1722417ed4428185abeb54470c9af, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: iza.007
-    second: {fileID: 2100000, guid: 3e71cb95ab69c40da84a8cfa7d739109, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: kamen.004
-    second: {fileID: 2100000, guid: 3adfe654c6e3543b48928411cbc81503, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lijevo.007
-    second: {fileID: 2100000, guid: 4b449c31249e04dfeb6c9b6debb5a900, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: naprijed.007
-    second: {fileID: 2100000, guid: 821c9e767456048fe98e41628fe61a14, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: pecat.008
-    second: {fileID: 2100000, guid: b1c11a5e673524021b6bfff4d38fd3cc, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: poklopac.007
-    second: {fileID: 2100000, guid: 69c5e3b1688b14c23a6e834495fd49dc, type: 2}
+      name: ruins.002
+    second: {fileID: 2100000, guid: 473de48c6b55c4bc0bbc28157f8f2118, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
