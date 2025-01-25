@@ -1,67 +1,89 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="IKTargetControl" Collapsed="true">
-    <Position X="7.5" Y="1.25" Width="1.5" />
+  <Class Name="BoxController" Collapsed="true">
+    <Position X="10" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAAgAQIAAAAggBAAAAAAAAAAABAAAAAA=</HashCode>
-      <FileName>Assets\Scripts\ArmControl.cs</FileName>
+      <HashCode>BAQAAAAAACAAAAAAAAAAAAAAIgAAAAAAAAIAACAAAAA=</HashCode>
+      <FileName>Assets\Scripts\BoxController.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="playerLogic" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.173" />
   </Class>
-  <Class Name="CollectableLogic" Collapsed="true">
-    <Position X="7.5" Y="2.5" Width="1.5" />
+  <Class Name="PlayerLogic">
+    <Position X="9.75" Y="3" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAQCAAAAACAAAggAAAAAAAAAAAAAAAABAAAAAAAAAAA=</HashCode>
-      <FileName>Assets\Scripts\CrystalLogic.cs</FileName>
+      <HashCode>AASEAAAAACAQAAKAAAwAAAAAAAAAAAACMBAgIUgAAAA=</HashCode>
+      <FileName>Assets\Scripts\PlayerLogic.cs</FileName>
     </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="enemyList" />
+    </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="EnemyLogic" Collapsed="true">
-    <Position X="9.5" Y="1.25" Width="1.5" />
+  <Class Name="EnemyLogic">
+    <Position X="13" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BQQAAAAAAGAAAQAAAAAAAAAAAAAAQAAFAAAAAAAAACI=</HashCode>
       <FileName>Assets\Scripts\EnemyLogic.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="FirstPersonScrollController" Collapsed="true">
-    <Position X="11.25" Y="3" Width="1.5" />
+  <Class Name="IKTargetControl">
+    <Position X="17.75" Y="1.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAgAQIAAAAggBAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\ArmControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectableLogic">
+    <Position X="6.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\CrystalLogic.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FirstPersonScrollController">
+    <Position X="15" Y="1.25" Width="2.25" />
     <TypeIdentifier>
       <HashCode>RCwCAAAAECAAAAAUEIAAEIAQAIQAAEAMAABAACAAABE=</HashCode>
       <FileName>Assets\Scripts\FirstPersonController.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="LightningEffect" Collapsed="true">
-    <Position X="12" Y="4" Width="1.5" />
+  <Class Name="LightningEffect">
+    <Position X="6.25" Y="4" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAQACAACEKAAAAgMAEiEIQAIgAAEIAiAIAAAAAAAAEA=</HashCode>
+      <HashCode>AAQAAAACEKAAAAgcAAiEMQAIgAAEIAiAMAAAAAAABEA=</HashCode>
       <FileName>Assets\Scripts\LightningEffect.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PauseMenu" Collapsed="true">
-    <Position X="9.25" Y="3.75" Width="1.5" />
+  <Class Name="PauseMenu">
+    <Position X="18.25" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EBQgAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAACgAIAA=</HashCode>
       <FileName>Assets\Scripts\PauseMenu.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PlayerLogic" Collapsed="true">
-    <Position X="5.25" Y="1.25" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>AASEAABAAAEAAAKAAAwAAAAAAAAAACAAABAgAUQAAAA=</HashCode>
-      <FileName>Assets\Scripts\PlayerLogic.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="SkyboxController" Collapsed="true">
-    <Position X="5.25" Y="2.5" Width="1.5" />
+  <Class Name="SkyboxController">
+    <Position X="12.5" Y="6.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAQAAAAEADgAAAAAAAAAAAAAAAAAIAAEAAAAgAAAACA=</HashCode>
       <FileName>Assets\Scripts\SkyboxController.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StartMenuController" Collapsed="true">
-    <Position X="3.5" Y="4.25" Width="1.5" />
+  <Class Name="StartMenuController">
+    <Position X="16" Y="8.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAIAgAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Assets\Scripts\StartMenuController.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Interface Name="IInteractable">
+    <Position X="8" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\IInteractable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
