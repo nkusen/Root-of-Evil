@@ -8,6 +8,7 @@ public class BoxController : MonoBehaviour, IInteractable
     private Animator animator;
 
     public PlayerLogic playerLogic;
+    public MessageController messageController;
 
     float timestamp;
    
@@ -32,6 +33,7 @@ public class BoxController : MonoBehaviour, IInteractable
         {
             animator.SetTrigger("Open");
             isOpen = true;
+            StartCoroutine(ShowMessages());
 
         } else if (playerLogic.GetFragmentCount() >= 0)
             {
@@ -40,5 +42,15 @@ public class BoxController : MonoBehaviour, IInteractable
             }
                                   
         return null;
+    }
+
+    private IEnumerator ShowMessages()
+    {
+        yield return new WaitForSeconds(3);
+
+        messageController.AddMessage("Oh no... Maybe it wasn’t the best idea to open the box?!");
+        messageController.AddMessage("WHAT ARE THE CHANCES THAT IT’S PANDORA’S BOX??");
+        messageController.AddMessage("THEY SHOULD REALLY LABEL THIS KIND OF STUFF...");
+        messageController.AddMessage("LET’s TRY TO COLLECT ALL THE MISSING PARTS OF THE SEAL TO CLOSE IT AGAIN!");
     }
 }

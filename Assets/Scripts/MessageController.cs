@@ -26,18 +26,16 @@ public class MessageController : MonoBehaviour
             {
                 cameraController.enabled = false;
             }
-        } else
-        {
-            messageQueue.Enqueue(message);
         }
+        messageQueue.Enqueue(message);
     }
 
     public void RemoveMessage()
     {
+        messageQueue.Dequeue();
+        messageCanvas.SetActive(false);
         if (messageQueue.Count == 0)
         {
-            messageCanvas.SetActive(false);
-
             Time.timeScale = 1f; // Resume game time
             Cursor.lockState = CursorLockMode.Locked; // Lock the cursor back to the game view
             Cursor.visible = false; // Hide the cursor
@@ -47,10 +45,10 @@ public class MessageController : MonoBehaviour
             {
                 cameraController.enabled = true;
             }
-        }
-        else
+        } else
         {
-            text.text = messageQueue.Dequeue();
+            text.text = messageQueue.Peek();
+            messageCanvas.SetActive(true);
         }
     }
 }
