@@ -10,6 +10,9 @@ public class PlayerLogic : MonoBehaviour
     public LayerMask enemyLayer;   // Layer for identifying enemies
     public bool showLookAtArea = true;
 
+    public MessageController messageController;
+    private bool enemyMet = false;
+
     public Dictionary<string, int> inventory = new Dictionary<string, int>();
 
     public float InteractRange;
@@ -77,6 +80,20 @@ public class PlayerLogic : MonoBehaviour
             {
                 if (enemy != null)
                 {
+                    if (!enemyMet)
+                    {
+                        // Get direction and angle to enemy
+                        Vector3 directionToEnemy = (enemy.transform.position - transform.position).normalized;
+                        float angleToEnemy = Vector3.Angle(transform.forward, directionToEnemy);
+
+                        // Check if enemy is within the look radius and angle
+                        if (Vector3.Distance(transform.position, enemy.transform.position) <= lookRadius && angleToEnemy < lookAngle)
+                        {
+                            enemyMet = true;
+                            StartCoroutine(ShowMessages());
+                        }
+                    }
+
                     if(!Input.GetMouseButton(1)){
                         if (enemy.IsLookedAt)
                         {
@@ -143,5 +160,13 @@ public class PlayerLogic : MonoBehaviour
         {
             interactObj.Interact();
         }
+    }
+
+    private IEnumerator ShowMessages()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        messageController.AddMessage("WAIT...DID THE STATUE JUST MOVE??");
+        messageController.AddMessage("Maybe I should try to stop them by pressing right click!");
     }
 }
