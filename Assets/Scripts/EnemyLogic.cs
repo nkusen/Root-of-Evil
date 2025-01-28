@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class EnemyLogic : MonoBehaviour
 {
     public bool IsAlive { get; private set; } = true; // By default alive
-    public bool IsFrozen { get; private set; } = false;
+    public bool IsFrozen { get; private set; } = true;
     public bool IsLookedAt { get; private set; } = false;
     public Animator animator;
 

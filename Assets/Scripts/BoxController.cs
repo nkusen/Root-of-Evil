@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BoxController : MonoBehaviour, IInteractable
 {
+    [SerializeField] private GameObject particleSystemPrefab;
+    [SerializeField] EnemyController enemyController;
     private bool isOpen = false;
     private Animator animator;
 
@@ -34,8 +36,18 @@ public class BoxController : MonoBehaviour, IInteractable
             animator.SetTrigger("Open");
             isOpen = true;
             StartCoroutine(ShowMessages());
+            if (particleSystemPrefab != null)
+            {
+                
+                GameObject spawnedParticles = Instantiate(
+                particleSystemPrefab,
+                transform.position,    
+                transform.rotation     
+                );
+            
+            }
 
-        } else if (playerLogic.GetFragmentCount() >= 0)
+        } else if (playerLogic.GetFragmentCount() >= 3)
             {
                 animator.SetTrigger("Close");
                 isOpen = false;
@@ -52,5 +64,6 @@ public class BoxController : MonoBehaviour, IInteractable
         messageController.AddMessage("WHAT ARE THE CHANCES THAT IT’S PANDORA’S BOX??");
         messageController.AddMessage("THEY SHOULD REALLY LABEL THIS KIND OF STUFF...");
         messageController.AddMessage("LET’s TRY TO COLLECT ALL THE MISSING PARTS OF THE SEAL TO CLOSE IT AGAIN!");
+        enemyController.StartEnemies();
     }
 }
