@@ -5,7 +5,10 @@ using UnityEngine;
 public class BoxController : MonoBehaviour, IInteractable
 {
     [SerializeField] private GameObject particleSystemPrefab;
-    [SerializeField] EnemyController enemyController;
+    [Tooltip("Reference to the LightningEffect script.")]
+    public LightningEffect lightningEffect;
+    [Tooltip("Reference to the WallController script.")]
+    public WallController wallController;
     private bool isOpen = false;
     private Animator animator;
 
@@ -51,6 +54,8 @@ public class BoxController : MonoBehaviour, IInteractable
             {
                 animator.SetTrigger("Close");
                 isOpen = false;
+                lightningEffect.StopThunderstorm();
+                
             }
                                   
         return null;
@@ -58,12 +63,27 @@ public class BoxController : MonoBehaviour, IInteractable
 
     private IEnumerator ShowMessages()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(10);
 
-        messageController.AddMessage("Oh no... Maybe it wasn’t the best idea to open the box?!");
-        messageController.AddMessage("WHAT ARE THE CHANCES THAT IT’S PANDORA’S BOX??");
+        messageController.AddMessage("Oh no... Maybe it wasn't the best idea to open the box?!");
+        messageController.AddMessage("WHAT ARE THE CHANCES THAT IT'S PANDORA'S BOX??");
         messageController.AddMessage("THEY SHOULD REALLY LABEL THIS KIND OF STUFF...");
-        messageController.AddMessage("LET’s TRY TO COLLECT ALL THE MISSING PARTS OF THE SEAL TO CLOSE IT AGAIN!");
-        enemyController.StartEnemies();
+        messageController.AddMessage("LET's TRY TO COLLECT ALL THE MISSING PARTS OF THE SEAL TO CLOSE IT AGAIN!");
+        if (lightningEffect != null)
+        {
+            lightningEffect.StartThunderstorm();
+        }
+        else
+        {
+            Debug.LogError("LightningEffect is not assigned in the Inspector!");
+        }
+        if (wallController != null)
+        {
+            wallController.OpenStartingWalls();
+        }
+        else
+        {
+            Debug.LogError("WallController is not assigned in the Inspector!");
+        }
     }
 }

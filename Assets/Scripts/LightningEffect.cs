@@ -52,6 +52,17 @@ public class LightningEffect : MonoBehaviour
     [Tooltip("The randomness of the lightning bolt's path.")]
     public float zigzagIntensity = 0.5f;
 
+    [Tooltip("Minimum time interval between lightning strikes during a thunderstorm.")]
+    public float minLightningInterval = 10.0f;
+
+    [Tooltip("Maximum time interval between lightning strikes during a thunderstorm.")]
+    public float maxLightningInterval = 40.0f;
+
+    private bool isThunderstormActive = false;
+
+    [Tooltip("Reference to the EnemyController script.")]
+    public EnemyController enemyController;
+
     private LineRenderer lineRenderer;
 
     private AudioSource thunderSound;
@@ -95,6 +106,10 @@ public class LightningEffect : MonoBehaviour
 
         // Start the combined lightning effect
         StartCoroutine(LightningSequence());
+        if (enemyController != null)
+        {
+            enemyController.CheckAndUnfreezeEnemies();
+        }
     }
 
     private System.Collections.IEnumerator LightningSequence()
@@ -213,5 +228,26 @@ public class LightningEffect : MonoBehaviour
         {
             SimulateLightning();
         }
+    }
+
+    public void StartThunderstorm()
+    {
+        isThunderstormActive = true;
+        StartCoroutine(ThunderstormRoutine());
+    }
+
+    private IEnumerator ThunderstormRoutine()
+    {
+        while (isThunderstormActive)
+        {
+            float interval = Random.Range(minLightningInterval, maxLightningInterval);
+            yield return new WaitForSeconds(interval);
+            SimulateLightning();
+        }
+    }
+
+    public void StopThunderstorm()
+    {
+        isThunderstormActive = false;
     }
 }

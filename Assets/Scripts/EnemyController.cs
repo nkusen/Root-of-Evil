@@ -10,17 +10,12 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private PlayerLogic player; // Reference to the player.
     [SerializeField] private LightningEffect lightning; // Lightning effect.
     [SerializeField] private float unfreezeDistance = 10f; // Distance to unfreeze enemies.
-    [SerializeField] private float checkInterval = 2f;
+   // [SerializeField] private float checkInterval = 2f;
 
 
     void Start()
     {
         PopulateEnemyList();
-    }
-
-    public void StartEnemies()
-    {
-        InvokeRepeating(nameof(CheckAndUnfreezeEnemies), 0f, checkInterval);
     }
 
     private void PopulateEnemyList()
@@ -47,7 +42,7 @@ public class EnemyController : MonoBehaviour
         Debug.Log($"Enemy list populated with {enemyList.Count} enemies.");
     }
 
-    private void CheckAndUnfreezeEnemies()
+    public void CheckAndUnfreezeEnemies()
     {
         List<EnemyLogic> enemiesToRemove = new List<EnemyLogic>();
 
@@ -66,7 +61,7 @@ public class EnemyController : MonoBehaviour
                 // Play the lightning effect.
                 if (lightning != null)
                 {
-                    lightning.SimulateLightning();
+                    //lightning.SimulateLightning();
                 }
 
                 enemiesToRemove.Add(enemy);

@@ -86,8 +86,8 @@ public class PlayerLogic : MonoBehaviour
                         Vector3 directionToEnemy = (enemy.transform.position - transform.position).normalized;
                         float angleToEnemy = Vector3.Angle(transform.forward, directionToEnemy);
 
-                        // Check if enemy is within the look radius and angle
-                        if (Vector3.Distance(transform.position, enemy.transform.position) <= lookRadius && angleToEnemy < lookAngle)
+                        // Check if enemy is within the look radius and angle and is moving
+                        if (enemy.IsAlive && !enemy.IsFrozen && Vector3.Distance(transform.position, enemy.transform.position) <= lookRadius && angleToEnemy < lookAngle)
                         {
                             enemyMet = true;
                             StartCoroutine(ShowMessages());
