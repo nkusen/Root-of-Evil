@@ -54,7 +54,13 @@ public class FirstPersonScrollController : MonoBehaviour
         // Get input for movement
         float horizontal = Input.GetAxisRaw("Horizontal"); // A/D or Left/Right
         float vertical = Input.GetAxisRaw("Vertical");     // W/S or Up/Down
-        
+        // Normalize horizontal and vertical inputs independently
+        float magnitude = Mathf.Sqrt(horizontal * horizontal + vertical * vertical);
+        if (magnitude > 0.1f) // Avoid small values that could lead to errors
+        {
+            horizontal /= magnitude;  // Normalize the horizontal input
+            vertical /= magnitude;    // Normalize the vertical input
+        }
         // Calculate direction relative to player orientation
         Vector3 moveDirection = transform.right * horizontal + transform.forward * vertical;
         Vector3 moveVelocity = moveDirection * moveSpeed;

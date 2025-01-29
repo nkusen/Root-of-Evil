@@ -12,6 +12,11 @@ public class BoxController : MonoBehaviour, IInteractable
     private bool isOpen = false;
     private Animator animator;
 
+    // Reference to the AudioSource component on the chest
+    private AudioSource audioSource1;
+    private AudioSource audioSource2;
+    private AudioSource audioSource3;
+
     public PlayerLogic playerLogic;
     public MessageController messageController;
 
@@ -22,6 +27,11 @@ public class BoxController : MonoBehaviour, IInteractable
     {
         animator = GetComponent<Animator>();
         timestamp = Time.time;
+
+        // Get the AudioSource component on the chest
+        audioSource1 = GetComponents<AudioSource>()[0];
+        audioSource2 = GetComponents<AudioSource>()[1];
+        audioSource3 = GetComponents<AudioSource>()[2];
     }
 
     // Update is called once per frame
@@ -49,13 +59,39 @@ public class BoxController : MonoBehaviour, IInteractable
                 );
             
             }
+            // Play both audio sources
+            if (audioSource1 != null)
+            {
+                audioSource1.Play();
+            }
+            else
+            {
+                Debug.LogWarning("AudioSource 1 is not assigned!");
+            }
+
+            if (audioSource2 != null)
+            {
+                audioSource2.Play();
+            }
+            else
+            {
+                Debug.LogWarning("AudioSource 2 is not assigned!");
+            }
+
 
         } else if (playerLogic.GetFragmentCount() >= 3)
             {
                 animator.SetTrigger("Close");
                 isOpen = false;
                 lightningEffect.StopThunderstorm();
-                
+                if (audioSource3 != null)
+                {
+                    audioSource3.Play();
+                }
+                else
+                {
+                    Debug.LogWarning("AudioSource 3 is not assigned!");
+                }
             }
                                   
         return null;
@@ -69,6 +105,7 @@ public class BoxController : MonoBehaviour, IInteractable
         messageController.AddMessage("WHAT ARE THE CHANCES THAT IT'S PANDORA'S BOX??");
         messageController.AddMessage("THEY SHOULD REALLY LABEL THIS KIND OF STUFF...");
         messageController.AddMessage("LET's TRY TO COLLECT ALL THE MISSING PARTS OF THE SEAL TO CLOSE IT AGAIN!");
+        yield return new WaitForSeconds(1);
         if (lightningEffect != null)
         {
             lightningEffect.StartThunderstorm();

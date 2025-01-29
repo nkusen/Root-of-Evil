@@ -18,12 +18,28 @@ public class WallController : MonoBehaviour
     [Tooltip("Delay before the walls start lowering.")]
     public float delayBeforeLowering = 1.0f;
 
+    // Reference to the AudioSource component
+    private AudioSource audioSource;
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     public void OpenStartingWalls()
     {
         // Ensure both walls are assigned
         if (wall1 != null && wall2 != null)
         {
             StartCoroutine(LowerAndDestroyWalls());
+            if (audioSource != null)
+            {
+                audioSource.Play();
+            }
+            else
+            {
+                Debug.LogWarning("AudioSource is not assigned!");
+            }
         }
         else
         {
@@ -48,7 +64,14 @@ public class WallController : MonoBehaviour
 
             yield return null; // Wait for the next frame
         }
-
+        if (audioSource != null)
+        {
+            audioSource.Stop();
+        }
+        else
+        {
+            Debug.LogWarning("AudioSource is not assigned!");
+        }
         // Destroy both walls
         Destroy(wall1);
         Destroy(wall2);

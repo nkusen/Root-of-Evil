@@ -14,7 +14,9 @@ public class FPSDisplay : MonoBehaviour
     {
         // Calculate FPS
         float fps = 1.0f / deltaTime;
-
+        if(fps > 360){
+            fps = 360;
+        }
         // Display FPS on the screen
         int width = Screen.width, height = Screen.height;
         GUIStyle style = new GUIStyle();

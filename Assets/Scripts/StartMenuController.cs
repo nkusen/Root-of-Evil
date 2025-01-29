@@ -9,7 +9,7 @@ public class StartMenuController : MonoBehaviour
     public void StartGame()
     {
         // Replace "GameScene" with the name of your game scene
-        SceneManager.LoadScene("MainScene");
+        SceneManager.LoadScene("LevelScene");
     }
 
     public void QuitGame()

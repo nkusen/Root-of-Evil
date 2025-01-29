@@ -57,22 +57,8 @@ public class EnemyController : MonoBehaviour
             {
                 // Unfreeze the enemy.
                 enemy.Freeze(false);
-
-                // Play the lightning effect.
-                if (lightning != null)
-                {
-                    //lightning.SimulateLightning();
-                }
-
-                enemiesToRemove.Add(enemy);
             }
         }
-
-        foreach (var enemy in enemiesToRemove)
-        {
-            enemyList.Remove(enemy);
-        }
-
     }
 
     // Update is called once per frame

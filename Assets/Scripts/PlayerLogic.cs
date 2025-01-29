@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class PlayerLogic : MonoBehaviour
 {
-    public List<EnemyLogic> enemyList;  // List of all enemies
+    [SerializeField] Transform enemyContainer;
+    private List<EnemyLogic> enemyList = new List<EnemyLogic>();  // List of all enemies
     public float lookRadius = 10f; // Radius for "looked at" effect
     public float lookAngle = 45f;  // Angle of the cone in front of the player
     public LayerMask enemyLayer;   // Layer for identifying enemies
     public bool showLookAtArea = true;
+    public float greenCrystalRange = 30f;
+    public float redCrystalRange = 20f;
 
     public MessageController messageController;
     private bool enemyMet = false;
@@ -45,12 +48,45 @@ public class PlayerLogic : MonoBehaviour
             } else { interactUI.enabled = false; }
         } else { interactUI.enabled = false; }
 
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            ActivateGreenCrystal();
+        }
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            ActivateRedCrystal();
+        }
+    }
+
+    private void PopulateEnemyList()
+    {
+        if (enemyContainer == null)
+        {
+            Debug.LogWarning("Enemy container is not assigned!");
+            return;
+        }
+
+        // Clear the existing list to avoid duplicates.
+        enemyList.Clear();
+
+        // Add all EnemyLogic components from the container's children to the list.
+        foreach (Transform child in enemyContainer)
+        {
+            EnemyLogic enemy = child.GetComponent<EnemyLogic>();
+            if (enemy != null)
+            {
+                enemyList.Add(enemy);
+            }
+        }
+
+        Debug.Log($"Enemy list populated with {enemyList.Count} enemies.");
     }
 
     private void Start()
     {
         interactUI.enabled = false;
         pickupSound = GetComponent<AudioSource>();
+        PopulateEnemyList();
     }
 
     public int GetFragmentCount()
@@ -71,6 +107,47 @@ public class PlayerLogic : MonoBehaviour
         return count;
     }
 
+    private void ActivateGreenCrystal()
+    {
+        // Consume one green crystal
+        if (GetGreenCrystalCount() > 0)
+        {
+            // Loop through each enemy in the list and freeze the ones within the range
+            foreach (EnemyLogic enemy in enemyList)
+            {
+                if (enemy != null && Vector3.Distance(transform.position, enemy.transform.position) <= greenCrystalRange)
+                {
+                    enemy.Freeze(true);  // Call the freeze method on the enemy
+                }
+            }
+            inventory["greenCrystal"] -= 1;  // Reduce the green crystal count by 1
+        }
+        else
+        {
+            Debug.Log("Not enough green crystals");
+        }
+    }
+
+    private void ActivateRedCrystal()
+    {
+        // Consume one green crystal
+        if (GetRedCrystalCount() > 0)
+        {
+            // Loop through each enemy in the list and kill the ones within the range
+            foreach (EnemyLogic enemy in enemyList)
+            {
+                if (enemy != null && Vector3.Distance(transform.position, enemy.transform.position) <= redCrystalRange)
+                {
+                    enemy.Kill();  // Call the freeze method on the enemy
+                }
+            }
+            inventory["redCrystal"] -= 1;  // Reduce the green crystal count by 1
+        }
+        else
+        {
+            Debug.Log("Not enough red crystals");
+        }
+    }
 
     private void UpdateLookedAtEnemies()
     {
