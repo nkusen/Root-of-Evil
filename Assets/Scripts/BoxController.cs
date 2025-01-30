@@ -20,6 +20,8 @@ public class BoxController : MonoBehaviour, IInteractable
     public PlayerLogic playerLogic;
     public MessageController messageController;
 
+    public EndMenu endMenu;
+
     float timestamp;
    
     // Start is called before the first frame update
@@ -80,21 +82,28 @@ public class BoxController : MonoBehaviour, IInteractable
 
 
         } else if (playerLogic.GetFragmentCount() >= 3)
+        {
+            animator.SetTrigger("Close");
+            isOpen = false;
+            lightningEffect.StopThunderstorm();
+            if (audioSource3 != null)
             {
-                animator.SetTrigger("Close");
-                isOpen = false;
-                lightningEffect.StopThunderstorm();
-                if (audioSource3 != null)
-                {
-                    audioSource3.Play();
-                }
-                else
-                {
-                    Debug.LogWarning("AudioSource 3 is not assigned!");
-                }
+                audioSource3.Play();
             }
+            else
+            {
+                Debug.LogWarning("AudioSource 3 is not assigned!");
+            }
+            StartCoroutine(EndGame());
+        }
                                   
         return null;
+    }
+
+    private IEnumerator EndGame()
+    {
+        yield return new WaitForSeconds(2);
+        endMenu.Win();
     }
 
     private IEnumerator ShowMessages()

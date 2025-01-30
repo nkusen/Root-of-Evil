@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerLogic : MonoBehaviour
@@ -24,6 +25,12 @@ public class PlayerLogic : MonoBehaviour
     public Canvas interactUI;
 
     private AudioSource pickupSound;
+
+    public TMP_Text fragment;
+    public TMP_Text greenCrystal;
+    public TMP_Text redCrystal;
+
+    public EndMenu endMenu;
 
     void Update()
     {
@@ -232,11 +239,19 @@ public class PlayerLogic : MonoBehaviour
             GetComponent<PlayerLogic>().inventory.TryGetValue(objectID, out int currentCount);
             GetComponent<PlayerLogic>().inventory[objectID] = currentCount + 1;
             pickupSound.Play();
+            RefreshHudCount();
         }
         else
         {
             interactObj.Interact();
         }
+    }
+
+    private void RefreshHudCount()
+    {
+        greenCrystal.text = GetGreenCrystalCount().ToString();
+        redCrystal.text = GetRedCrystalCount().ToString();
+        fragment.text = GetFragmentCount().ToString() + " / 3";
     }
 
     private IEnumerator ShowMessages()
@@ -245,5 +260,17 @@ public class PlayerLogic : MonoBehaviour
 
         messageController.AddMessage("WAIT...DID THE STATUE JUST MOVE??");
         messageController.AddMessage("Maybe I should try to stop them by pressing right click!");
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy")) // Check if collided object is tagged as "Enemy"
+        {
+            EnemyLogic enemy = collision.gameObject.GetComponent<EnemyLogic>();
+            if (!enemy.IsFrozen && !enemy.IsLookedAt && enemy.IsAlive)
+            {
+                endMenu.Lose();
+            }
+        }
     }
 }
