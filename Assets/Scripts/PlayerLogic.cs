@@ -18,6 +18,7 @@ public class PlayerLogic : MonoBehaviour
     private bool enemyMet = false;
 
     public Dictionary<string, int> inventory = new Dictionary<string, int>();
+    private bool greenPickedUp, redPickedUp;
 
     public float InteractRange;
     public Transform InteractorSource;
@@ -128,6 +129,7 @@ public class PlayerLogic : MonoBehaviour
                 }
             }
             inventory["greenCrystal"] -= 1;  // Reduce the green crystal count by 1
+            RefreshHudCount();
         }
         else
         {
@@ -149,6 +151,7 @@ public class PlayerLogic : MonoBehaviour
                 }
             }
             inventory["redCrystal"] -= 1;  // Reduce the green crystal count by 1
+            RefreshHudCount();
         }
         else
         {
@@ -240,6 +243,19 @@ public class PlayerLogic : MonoBehaviour
             GetComponent<PlayerLogic>().inventory[objectID] = currentCount + 1;
             pickupSound.Play();
             RefreshHudCount();
+
+            if (!greenPickedUp && objectID == "greenCrystal")
+            {
+                greenPickedUp = true;
+                messageController.AddMessage("You just picked up a green crystal which freezes nearby enemies.");
+                messageController.AddMessage("Press F to activate it. This will consume one green crystal!");
+            }
+            if (!redPickedUp && objectID == "redCrystal")
+            {
+                redPickedUp = true;
+                messageController.AddMessage("You just picked up a red crystal which kills nearby enemies.");
+                messageController.AddMessage("Press G to activate it. This will consume one red crystal!");
+            }
         }
         else
         {
