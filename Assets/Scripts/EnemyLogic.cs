@@ -51,7 +51,17 @@ public class EnemyLogic : MonoBehaviour
 
     public void Kill()
     {
+        if (!IsAlive) return; // Prevent multiple triggers
         IsAlive = false;
         Freeze(true); // Freeze when killed
+
+        // Disable enemy visuals and remove after delay
+        StartCoroutine(RemoveEnemy());
+    }
+
+    private IEnumerator RemoveEnemy()
+    {
+        yield return new WaitForSeconds(0.5f); // Wait a bit before removal
+        Destroy(gameObject);
     }
 }

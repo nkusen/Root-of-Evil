@@ -6,6 +6,13 @@ using UnityEngine;
 public class FirstPersonScrollController : MonoBehaviour
 {
     Animator animator;
+    [SerializeField] private float maxStamina = 100f;
+    private float currentStamina;
+    [SerializeField] private float staminaDrainRate = 20f; // Per second when running
+    [SerializeField] private float staminaRegenRate = 10f; // Per second when not running
+    private bool isRunning;
+    public float staminaRegenThreshold = 20f; // % of stamina needed before running again
+    private bool isExhausted = false; // Prevents running when stamina is too low
 
     public float moveSpeed = 5f;           // Speed of movement
     public float rotationSpeed = 100f;    // Speed of rotation for mouse scroll left/right
@@ -35,10 +42,11 @@ public class FirstPersonScrollController : MonoBehaviour
         // Lock cursor to the game window
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
+        currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
         // Calculate the initial offset of the camera relative to the head
         initialHeadToCameraOffset = cameraTransform.position - headTransform.position;
         initialHeadToCameraRotation = Quaternion.Inverse(headTransform.rotation) * cameraTransform.rotation;
+        currentStamina = maxStamina; // Initialize stamina
     }
 
     void Update()
@@ -64,22 +72,46 @@ public class FirstPersonScrollController : MonoBehaviour
         // Calculate direction relative to player orientation
         Vector3 moveDirection = transform.right * horizontal + transform.forward * vertical;
         Vector3 moveVelocity = moveDirection * moveSpeed;
-        if (Input.GetKey(KeyCode.LeftShift))
+
+        if (Input.GetKey(KeyCode.LeftShift) && currentStamina > 0 && !isExhausted && moveVelocity.sqrMagnitude > 0)
         {
             moveVelocity *= runModifier;
+            currentStamina -= staminaDrainRate * Time.deltaTime;
             animator.SetBool("isRunning", true);
+
+            if (currentStamina <= 0)
+            {
+                currentStamina = 0;
+                isExhausted = true; // Prevent further running
+            }
         }
-        else{
+        else
+        {
             animator.SetBool("isRunning", false);
+
+            if (currentStamina < maxStamina)
+            {
+                currentStamina += staminaRegenRate * Time.deltaTime;
+            }
+
+            // Allow running again if stamina is above the threshold
+            if (isExhausted && currentStamina >= staminaRegenThreshold)
+            {
+                isExhausted = false;
+            }
         }
         // Apply velocity while preserving vertical velocity
         rb.velocity = new Vector3(moveVelocity.x, rb.velocity.y, moveVelocity.z);
-        if(horizontal != 0.0f || vertical != 0.0f){
+        if (horizontal != 0.0f || vertical != 0.0f)
+        {
             animator.SetBool("isWalking", true);
         }
-        else{
+        else
+        {
             animator.SetBool("isWalking", false);
         }
+
+        UpdateStaminaUI();
     }
 
     private void HandleMouseLook()
@@ -125,17 +157,22 @@ public class FirstPersonScrollController : MonoBehaviour
     }
 
     private void SmoothFollowHead()
-{
-    // Target position based on head position and initial offset
-    Vector3 targetPosition = headTransform.TransformPoint(initialHeadToCameraOffset);
+    {
+        // Target position based on head position and initial offset
+        Vector3 targetPosition = headTransform.TransformPoint(initialHeadToCameraOffset);
 
-    // Target rotation based on head rotation and initial offset
-    Quaternion targetRotation = headTransform.rotation * initialHeadToCameraRotation;
+        // Target rotation based on head rotation and initial offset
+        Quaternion targetRotation = headTransform.rotation * initialHeadToCameraRotation;
 
-    // Smoothly move the camera
-    cameraTransform.position = Vector3.Lerp(cameraTransform.position, targetPosition, followHeadSmoothness);
+        // Smoothly move the camera
+        cameraTransform.position = Vector3.Lerp(cameraTransform.position, targetPosition, followHeadSmoothness);
 
-    // Smoothly rotate the camera
-    cameraTransform.rotation = Quaternion.Slerp(cameraTransform.rotation, targetRotation, followHeadSmoothness);
-}
+        // Smoothly rotate the camera
+        cameraTransform.rotation = Quaternion.Slerp(cameraTransform.rotation, targetRotation, followHeadSmoothness);
+    }
+
+    private void UpdateStaminaUI()
+    {
+        UIManager.Instance.UpdateStaminaBar(currentStamina / maxStamina);
+    }
 }

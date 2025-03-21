@@ -33,6 +33,10 @@ public class PlayerLogic : MonoBehaviour
 
     public EndMenu endMenu;
 
+    public ParticleSystem greenCrystalEffect;
+    public ParticleSystem redCrystalEffect;
+    public AudioSource crystalSound;
+
     void Update()
     {
         UpdateLookedAtEnemies();
@@ -130,6 +134,18 @@ public class PlayerLogic : MonoBehaviour
             }
             inventory["greenCrystal"] -= 1;  // Reduce the green crystal count by 1
             RefreshHudCount();
+
+            // Play the particle effect at the player's position
+            if (greenCrystalEffect != null)
+            {
+                Instantiate(greenCrystalEffect, transform.position, Quaternion.identity).Play();
+            }
+
+            // Play sound effect
+            if (crystalSound != null)
+            {
+                crystalSound.Play();
+            }
         }
         else
         {
@@ -139,7 +155,7 @@ public class PlayerLogic : MonoBehaviour
 
     private void ActivateRedCrystal()
     {
-        // Consume one green crystal
+        // Consume one red crystal
         if (GetRedCrystalCount() > 0)
         {
             // Loop through each enemy in the list and kill the ones within the range
@@ -150,8 +166,20 @@ public class PlayerLogic : MonoBehaviour
                     enemy.Kill();  // Call the freeze method on the enemy
                 }
             }
-            inventory["redCrystal"] -= 1;  // Reduce the green crystal count by 1
+            inventory["redCrystal"] -= 1;  // Reduce the red crystal count by 1
             RefreshHudCount();
+            
+            // Play the particle effect at the player's position
+            if (redCrystalEffect != null)
+            {
+                Instantiate(redCrystalEffect, transform.position, Quaternion.identity).Play();
+            }
+
+            // Play sound effect
+            if (crystalSound != null)
+            {
+                crystalSound.Play();
+            }
         }
         else
         {

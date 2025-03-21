@@ -79,7 +79,8 @@ public class LightningEffect : MonoBehaviour
         // Store original exposure and sunlight intensity
         if (skyboxMaterial != null && skyboxMaterial.HasProperty(exposureProperty))
         {
-            originalExposure = skyboxMaterial.GetFloat(exposureProperty);
+            originalExposure = 1.0f;
+            skyboxMaterial.SetFloat(exposureProperty, originalExposure);
         }
         else
         {
