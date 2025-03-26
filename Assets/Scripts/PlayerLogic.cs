@@ -57,8 +57,10 @@ public class PlayerLogic : MonoBehaviour
                 {
                     InteractHandler(interactObj, hitObject.tag);
                 }
-            } else { interactUI.enabled = false; }
-        } else { interactUI.enabled = false; }
+            }
+            else { interactUI.enabled = false; }
+        }
+        else { interactUI.enabled = false; }
 
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -168,7 +170,7 @@ public class PlayerLogic : MonoBehaviour
             }
             inventory["redCrystal"] -= 1;  // Reduce the red crystal count by 1
             RefreshHudCount();
-            
+
             // Play the particle effect at the player's position
             if (redCrystalEffect != null)
             {
@@ -189,7 +191,8 @@ public class PlayerLogic : MonoBehaviour
 
     private void UpdateLookedAtEnemies()
     {
-        if(enemyList != null){
+        if (enemyList != null)
+        {
             // Loop through each enemy in the list
             foreach (EnemyLogic enemy in enemyList)
             {
@@ -209,13 +212,15 @@ public class PlayerLogic : MonoBehaviour
                         }
                     }
 
-                    if(!Input.GetMouseButton(1)){
+                    if (!Input.GetMouseButton(1))
+                    {
                         if (enemy.IsLookedAt)
                         {
                             enemy.SetLookedAt(false); // Unset looked at
                         }
                     }
-                    else{
+                    else
+                    {
                         // Get direction and angle to enemy
                         Vector3 directionToEnemy = (enemy.transform.position - transform.position).normalized;
                         float angleToEnemy = Vector3.Angle(transform.forward, directionToEnemy);
@@ -304,6 +309,7 @@ public class PlayerLogic : MonoBehaviour
 
         messageController.AddMessage("WAIT...DID THE STATUE JUST MOVE??");
         messageController.AddMessage("Maybe I should try to stop them by pressing right click!");
+        messageController.AddMessage("I can probably outrun them by holding SHIFT!");
     }
 
     void OnCollisionEnter(Collision collision)

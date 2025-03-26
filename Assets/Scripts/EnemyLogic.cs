@@ -13,10 +13,14 @@ public class EnemyLogic : MonoBehaviour
     private NavMeshAgent agent;
     public Transform player; // Reference to the player.
 
+    private AudioSource audioSource;         // Reference to AudioSource
+
     private void Start()
     {
         // Cache the NavMeshAgent component
         agent = GetComponent<NavMeshAgent>();
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -63,5 +67,13 @@ public class EnemyLogic : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f); // Wait a bit before removal
         Destroy(gameObject);
+    }
+
+    public void PlayFootstepSound()
+    {
+        if (audioSource != null)  // Prevent overlapping sounds
+        {
+            audioSource.Play();  // Play the footstep sound from the AudioSource attached to the enemy
+        }
     }
 }

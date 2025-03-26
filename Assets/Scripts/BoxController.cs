@@ -23,7 +23,7 @@ public class BoxController : MonoBehaviour, IInteractable
     public EndMenu endMenu;
 
     float timestamp;
-   
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,7 +39,7 @@ public class BoxController : MonoBehaviour, IInteractable
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public string Interact()
@@ -53,13 +53,13 @@ public class BoxController : MonoBehaviour, IInteractable
             StartCoroutine(ShowMessages());
             if (particleSystemPrefab != null)
             {
-                
+
                 GameObject spawnedParticles = Instantiate(
                 particleSystemPrefab,
-                transform.position,    
-                transform.rotation     
+                transform.position,
+                transform.rotation
                 );
-            
+
             }
             // Play both audio sources
             if (audioSource1 != null)
@@ -81,7 +81,8 @@ public class BoxController : MonoBehaviour, IInteractable
             }
 
 
-        } else if (playerLogic.GetFragmentCount() >= 3)
+        }
+        else if (playerLogic.GetFragmentCount() >= 3)
         {
             animator.SetTrigger("Close");
             isOpen = false;
@@ -96,7 +97,7 @@ public class BoxController : MonoBehaviour, IInteractable
             }
             StartCoroutine(EndGame());
         }
-                                  
+
         return null;
     }
 
